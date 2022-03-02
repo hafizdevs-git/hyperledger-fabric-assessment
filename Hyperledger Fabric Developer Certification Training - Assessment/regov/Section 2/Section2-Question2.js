@@ -33,7 +33,7 @@ class Account {
           this.balance = this.balance - amount;
         }
         else{
-            return this.name + ' account balance RM'+ this.balance + ' not sufficient! to transfer RM' + amount;
+            return this.name + ' account balance RM'+ this.balance + ' not sufficient to transfer RM' + amount + '!';
         }
     }
   }
@@ -58,7 +58,7 @@ class Account {
   console.log('Uwais get RM9000 to his account after there is miscalculation on the bank side. ');
   console.log(account2.setBalance(9000));
 
-  console.log('Hafiz final balance account : RM' + account1.getBalance());
-  console.log('Uwais final balance account : RM' + account2.getBalance());
+  console.log('Hafiz final balance account : ' + account1.getBalance());
+  console.log('Uwais final balance account : ' + account2.getBalance());
 
 
