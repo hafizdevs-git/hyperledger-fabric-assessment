@@ -1,64 +1,102 @@
 class Account {
-    constructor(name, balance) {
-      this.name = name;
-      this.balance = balance;
-    }
-
-    deposit(amount) {
-        this.balance = this.balance + amount;
-        return this.balance;
-      }
-
-    
-    withdraw(amount){
-        this.balance = this.balance - amount;
-        return this.balance;
-    }
+  constructor(name, balance) {
+    this.name = name;
+    this.balance = balance;
   }
+
+  deposit(amount) {
+      this.balance = this.balance + amount;
+      console.log('Successfully deposited RM' + amount + '. ' + this.name + ' new account balance : ' + this.balance);
+    }
+
+  
+  withdraw(amount){
+    if(this.balance > amount){
+      this.balance = this.balance - amount;
+      console.log('Successfully withdrawed RM' + amount + '. ' + this.name + ' new account balance : ' + this.balance);
+    }
+    else{
+      console.log(this.name + ' account balance RM'+ this.balance + ' not sufficient to withdraw RM' + amount+ '!')
+    }
+      
+  }
+  str(){
+    console.log('Account name : ' +this.name + '. Account balance : RM' + this.balance);
+
+  }
+}
 
   class DevAccount extends Account {
     constructor(name, balance) {
         super(name, balance);
       }
     getBalance() {
-      return 'Balance : RM' + this.balance;
+      console.log(this.name + ' account balance : RM' + this.balance);
     }
     setBalance(amount){
         this.balance = amount;
-        return this.name +' new account balance : RM' + this.balance;
+        console.log(this.name +' new account balance : RM' + this.balance);
     }
-    transferOtherAccount (amount, acc){
+    transferOtherAccount (amount, nameToTransfer){
+      var account = localDB.find(e => e.name === nameToTransfer);
+      if(account === undefined){
+        console.log('There is no account named '+ nameToTransfer + '!');
+      }
+      else{
         if(this.balance > amount){
-          acc.deposit(amount);
+          account.balance = account.balance + amount;
           this.balance = this.balance - amount;
+          console.log('Successfully transfer RM' + amount + ' to '+ nameToTransfer + '. '+  this.name + ' new account balance : ' + this.balance);
         }
         else{
-            return this.name + ' account balance RM'+ this.balance + ' not sufficient to transfer RM' + amount + '!';
+          console.log(this.name + ' account balance RM'+ this.balance + ' not sufficient! to transfer RM' + amount + ' to ' + nameToTransfer);
         }
+      }
     }
   }
 
-  var account1 =  new DevAccount("Hafiz", 15000);
-  var account2 =  new DevAccount("Uwais", 1000);
+  function execute(name, method,amount, nameToTransfer){
+    var account = localDB.find(e => e.name === name);
+    if(account === undefined){
+      console.log('There is no account named '+ name + '!');
+    }
+    else{
+      switch(method) {
+        case 'deposit':
+          account.deposit(amount);
+          break;
+        case 'withdraw':
+          account.withdraw(amount);
+          break;
+        case 'str':
+          account.str();
+          break;
+        case 'getBalance':
+          account.getBalance();
+          break;
+        case 'setBalance':
+          account.setBalance(amount);
+          break;
+        case 'transferOtherAccount':
+          account.transferOtherAccount(amount, nameToTransfer);
+          break;
+        default:
+          console.log('Error. Please recheck!');
+      }
+    }
 
-  console.log('Hafiz balance Account : RM' + account1.balance);
-  console.log('Uwais balance Account : RM' + account2.balance);
+  }
 
-  account1.deposit(3000);
-  console.log('Hafiz deposit RM3000. ');
-  console.log('Hafiz balance account : RM' + account1.balance);
+  var localDB = [];
+  localDB.push(new DevAccount('Hafiz', 100));
+  localDB.push(new DevAccount('Uwais', 700));
 
-  console.log('Uwais try to send RM5000 to Hafiz. ');
-  console.log(account2.transferOtherAccount(5000, account1));
-
-  account1.transferOtherAccount(5000, account2);
-  console.log('Hafiz transfer RM5000 to Uwais. ');
-  console.log('Uwais balance account : RM' + account2.getBalance());
-
-  console.log('Uwais get RM9000 to his account after there is miscalculation on the bank side. ');
-  console.log(account2.setBalance(9000));
-
-  console.log('Hafiz final balance account : ' + account1.getBalance());
-  console.log('Uwais final balance account : ' + account2.getBalance());
-
+  execute('Hafiz', 'getBalance');
+  execute('Uwais', 'getBalance');
+  execute('Hafiz', 'transferOtherAccount', 300, 'Uwais');
+  execute('Hafiz', 'deposit', 250);
+  execute('Hafiz', 'transferOtherAccount', 300, 'Uwais');
+  execute('Hafiz', 'getBalance');
+  execute('Uwais', 'getBalance');
+  execute('Hafiz', 'setBalance', 1000);
 
