@@ -24,5 +24,5 @@ function Start (n) {
 
     return result;
 }
-console.log(Start(100));
+console.log(Start(100)); //Call function to start program.
 
