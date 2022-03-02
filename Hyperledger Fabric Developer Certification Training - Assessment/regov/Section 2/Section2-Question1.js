@@ -6,30 +6,57 @@ class Account {
 
     deposit(amount) {
         this.balance = this.balance + amount;
-        return 'Deposited amount : ' + amount + '. Balance : ' + this.balance;
+        console.log('Successfully deposited RM' + amount + '. ' + this.name + ' new account balance : ' + this.balance);
       }
 
     
     withdraw(amount){
+      if(this.balance > amount){
         this.balance = this.balance - amount;
-        return 'withdrawed amount : ' + amount + '. Balance : ' + this.balance;
+        console.log('Successfully withdrawed RM' + amount + '. ' + this.name + ' new account balance : ' + this.balance);
+      }
+      else{
+        console.log(this.name + ' account balance RM'+ this.balance + ' not sufficient to withdraw RM' + amount+ '!')
+      }
+        
     }
     str(){
-      return 'Name : ' +this.name + '. Balance : RM' + this.balance;
+      console.log('Account name : ' +this.name + '. Account balance : RM' + this.balance);
 
     }
   }
 
-  var createNewAccount1 =  new Account("Hafiz", 15000);
-  console.log(createNewAccount1); 
+  function execute(name, method,amount){
+    var account = localDB.find(e => e.name === name);
+    if(account === undefined){
+      console.log('There is no account named '+ name + '!');
+    }
+    else{
+      switch(method) {
+        case 'deposit':
+          account.deposit(amount);
+          break;
+        case 'withdraw':
+          account.withdraw(amount);
+          break;
+        case 'str':
+          account.str();
+          break;
+        default:
+          console.log('Error. Please recheck!');
+      }
+    }
 
-  console.log(createNewAccount1.str());
+  }
 
-  var depositHafizAccount = createNewAccount1.deposit(3000);
-  console.log(depositHafizAccount);
+  var localDB = [];
+  localDB.push(new Account('Hafiz', 100));
 
-  var withdrawHafizaccount = createNewAccount1.withdraw(8000);
-  console.log(withdrawHafizaccount);
+  execute('Uwais', 'str');
+  execute('Hafiz', 'str');
+  execute('Hafiz', 'withdraw', 300);
+  execute('Hafiz', 'deposit', 400);
+  execute('Hafiz', 'withdraw', 300);
+  execute('Hafiz', 'str');
 
-  console.log(createNewAccount1.str());
         
