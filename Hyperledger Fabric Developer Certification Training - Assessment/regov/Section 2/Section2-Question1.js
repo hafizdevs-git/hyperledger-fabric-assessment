@@ -59,4 +59,7 @@ class Account {
   execute('Hafiz', 'withdraw', 300);
   execute('Hafiz', 'str');
 
-        
+  //Array were use as data structure in this program.
+  //After calling the class and set the parameter, the data from the class were pushed to the array list.
+  //A function called 'execute' were use as a controller to filter out (checking if the data is valid or not) and assigned which one unique instance/function in the class Account to call.
+  //The changes in the data when processed by the unique instance/function in the class Account will also change the respective data in the array.
