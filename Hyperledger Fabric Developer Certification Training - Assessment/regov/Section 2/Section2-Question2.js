@@ -100,4 +100,6 @@ class Account {
   execute('Uwais', 'getBalance');
   execute('Hafiz', 'setBalance', 1000);
 
-  //end
+  //The class DevAccount is the 'child' of the parent class Account.
+  //The 'child' DevAccount can inherited or use the property or the unique instance/function in the 'parent' class Account.
+  
